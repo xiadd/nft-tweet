@@ -1,0 +1,31 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Counter",
+  "sourceName": "contracts/Counter.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "count",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCounter",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b5060a88061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806306661abd1460375780638ada066e14603f575b600080fd5b603d605b565b005b60456069565b6040518082815260200191505060405180910390f35b600160005401600081905550565b6000805490509056fea26469706673582212204b55d7fe83af52d1126d39150f7e47adf23a15b9c10fe4d485ea3778a4d993e864736f6c63430007030033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c806306661abd1460375780638ada066e14603f575b600080fd5b603d605b565b005b60456069565b6040518082815260200191505060405180910390f35b600160005401600081905550565b6000805490509056fea26469706673582212204b55d7fe83af52d1126d39150f7e47adf23a15b9c10fe4d485ea3778a4d993e864736f6c63430007030033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
