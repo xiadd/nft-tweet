@@ -1,46 +1,58 @@
-import { useEffect } from "react";
-import Web3 from "web3";
-import logo from "./logo.svg";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import useWeb3 from "./hooks/useWeb3";
+import { abi } from "./artifacts/contracts/Tweet.sol/UniqueTweet.json";
+import List from "./components/List";
+import Empty from "./components/Empty";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import { abi } from "./artifacts/contracts/Counter.sol/Counter.json";
 
-async function loadWeb3() {
-  if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum);
-    await window.ethereum.enable();
-  } else if (window.web3) {
-    window.web3 = new Web3(window.web3.currentProvider);
-  }
-}
-
-const address = "0x0165878a594ca255338adfa4d48449f69242eb8f";
+const address = "0xac547E50620c8Cb9AE7E0575Ae378f7744DEF347";
 
 function App() {
-  useEffect(() => {
-    loadWeb3().then(async () => {
-      const [account] = await window.web3.eth.getAccounts();
-      const contract = new window.web3.eth.Contract(abi, address);
-      await contract.methods.count().send({ from: account }, async () => {
-        console.log(await contract.methods.getCounter().call(), account);
+  const { contract, account } = useWeb3(abi, address);
+  const [content, setContent] = useState("");
+  const [tweets, setTweets] = useState([]);
+
+  const fetchTweets = async () => {
+    const tweets = await contract.methods.getTweets().call();
+    setTweets(tweets);
+  };
+  const postTweets = () => {
+    if (!content) return toast.info("Content cannot be empty");
+    contract.methods
+      .mint(content, Date.now().toString())
+      .send({ from: account })
+      .on("transactionHash", function (hash: any) {
+        console.log({ hash });
+        window.location.reload();
+      })
+      .on("confirmation", function (confirmationNumber: any, receipt: any) {
+        console.log({ confirmationNumber, receipt });
       });
-    });
-  }, []);
+  };
+  useEffect(() => {
+    if (contract) fetchTweets();
+  }, [contract]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container mt-2 grid-lg">
+        <textarea
+          className="form-control"
+          rows={3}
+          placeholder="Input you tweet"
+          style={{ resize: "none" }}
+          value={content}
+          onChange={(evt) => setContent(evt.target.value)}
+        />
+        <div className="mt-2">
+          <button onClick={postTweets} className="btn btn-primary btn-lg">
+            Post
+          </button>
+        </div>
+        {tweets.length ? <List tweets={tweets} /> : <Empty />}
+      </div>
+      <ToastContainer />
     </div>
   );
 }

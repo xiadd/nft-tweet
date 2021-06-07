@@ -14,12 +14,12 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Counter = await hre.ethers.getContractFactory("Counter");
-  const counter = await Counter.deploy();
+  const Tweet = await hre.ethers.getContractFactory("UniqueTweet");
+  const tweet = await Tweet.deploy();
 
-  await counter.deployed();
+  await tweet.deployed();
 
-  console.log("Counter deployed to:", counter.address);
+  console.log("Counter deployed to:", tweet.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
