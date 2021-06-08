@@ -1,59 +1,30 @@
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Switch, Route } from "react-router-dom";
+import Index from "./pages/index";
+import UserProfile from "./pages/user";
+import Header from "./components/Header";
 import useWeb3 from "./hooks/useWeb3";
 import { abi } from "./artifacts/contracts/Tweet.sol/UniqueTweet.json";
-import List from "./components/List";
-import Empty from "./components/Empty";
-import "react-toastify/dist/ReactToastify.css";
+import { Context } from "./contexts/web3";
 import "./App.css";
 
-const address = "0xac547E50620c8Cb9AE7E0575Ae378f7744DEF347";
+const address = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 function App() {
-  const { contract, account } = useWeb3(abi, address);
-  const [content, setContent] = useState("");
-  const [tweets, setTweets] = useState([]);
-
-  const fetchTweets = async () => {
-    const tweets = await contract.methods.getTweets().call();
-    setTweets(tweets);
-  };
-  const postTweets = () => {
-    if (!content) return toast.info("Content cannot be empty");
-    contract.methods
-      .mint(content, Date.now().toString())
-      .send({ from: account })
-      .on("transactionHash", function (hash: any) {
-        console.log({ hash });
-        window.location.reload();
-      })
-      .on("confirmation", function (confirmationNumber: any, receipt: any) {
-        console.log({ confirmationNumber, receipt });
-      });
-  };
-  useEffect(() => {
-    if (contract) fetchTweets();
-  }, [contract]);
+  const { contract, account, web3 } = useWeb3(abi, address);
   return (
-    <div className="App">
-      <div className="container mt-2 grid-lg">
-        <textarea
-          className="form-control"
-          rows={3}
-          placeholder="Input you tweet"
-          style={{ resize: "none" }}
-          value={content}
-          onChange={(evt) => setContent(evt.target.value)}
-        />
-        <div className="mt-2">
-          <button onClick={postTweets} className="btn btn-primary btn-lg">
-            Post
-          </button>
-        </div>
-        {tweets.length ? <List tweets={tweets} /> : <Empty />}
-      </div>
-      <ToastContainer />
-    </div>
+    <Context.Provider value={{ contract, account, web3 }}>
+      <>
+        <Header />
+        <Switch>
+          <Route exact path="/">
+            <Index />
+          </Route>
+          <Route path="/user/:id">
+            <UserProfile />
+          </Route>
+        </Switch>
+      </>
+    </Context.Provider>
   );
 }
 

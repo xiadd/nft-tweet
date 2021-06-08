@@ -1,6 +1,8 @@
 import cx from "classnames";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Link } from "react-router-dom";
+import UserAvatar from "../UserAvatar";
 import styles from "./index.module.css";
 
 dayjs.extend(relativeTime);
@@ -11,12 +13,16 @@ export default function List({ tweets }: { tweets: any[] }) {
       {tweets.map((item, index) => (
         <div key={index} className={cx(styles.item, "mt-2")}>
           <div className={styles.header}>
-            <b>{item.user}</b>
-            <span className="text-tiny ml-2">
+            <Link to={`/user/${item.user}`}>
+              <UserAvatar hash={item.user} />
+            </Link>
+            <span className="text-muted ms-2">
               {dayjs(+item.date).fromNow()}
             </span>
           </div>
-          <div className={styles.content}>{item.text}</div>
+          <div className={cx(styles.content, "fw-lighter", "mt-3")}>
+            {item.text}
+          </div>
         </div>
       ))}
     </div>
