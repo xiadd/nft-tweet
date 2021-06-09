@@ -1,4 +1,5 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
+import Home from "./pages/home";
 import Index from "./pages/index";
 import UserProfile from "./pages/user";
 import Transfer from "./pages/transfer";
@@ -12,12 +13,16 @@ const address = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 function App() {
   const { contract, account, web3 } = useWeb3(abi, address);
+  const location = useLocation();
   return (
     <Context.Provider value={{ contract, account, web3 }}>
       <>
-        <Header />
+        {location.pathname !== "/" && <Header />}
         <Switch>
           <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/tweets">
             <Index />
           </Route>
           <Route path="/user/:id">
