@@ -11,6 +11,11 @@ function Index() {
   const [tweets, setTweets] = useState<any[]>([]);
 
   const fetchTweets = async () => {
+    // console.log(
+    //   await contract.methods
+    //     .transferTweet(1, "0x3e63548098A9c72B73373e0af5fC52325eA666D9")
+    //     .send({ from: account })
+    // );
     const tweets = await contract.methods.getTweets().call();
     setTweets(tweets);
   };
@@ -28,7 +33,9 @@ function Index() {
       });
   };
   useEffect(() => {
-    if (contract) fetchTweets();
+    if (contract) {
+      fetchTweets();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract]);
   return (

@@ -27,5 +27,14 @@ export default function useWeb3(abi: any, address: any) {
       });
     });
   }, [abi, address]);
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", (accounts: string[]) => {
+      setState(($state: any) => ({
+        ...$state,
+        account: accounts[0],
+      }));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return state;
 }

@@ -14,9 +14,16 @@ struct Tweet {
 contract UniqueTweet is ERC721 {
     Tweet[] public tweets;
 
-    event userTweets(address user);
+    event userTweets(address indexed user);
 
     constructor() ERC721("UniqueTweet", "UNIQUETWEET") {}
+
+    function transferTweet(uint256 _tokenId, address payable buyer)
+        public
+        payable
+    {
+        _transfer(ownerOf(_tokenId), buyer, _tokenId);
+    }
 
     function getTweets() public view returns (Tweet[] memory) {
         return tweets;

@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import cx from "classnames";
 import UserAvatar from "../UserAvatar";
 import { Context, IContext } from "../../contexts/web3";
 
 export default function Header() {
   const { account } = useContext<IContext>(Context);
+  const [visible, setVisible] = useState<boolean>(false);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container-fluid">
@@ -19,10 +21,15 @@ export default function Header() {
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={() => setVisible(!visible)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          className={cx("collapse navbar-collapse", {
+            show: visible,
+          })}
+        >
           <ul className="navbar-nav me-auto mb-2 mb-lg-0"></ul>
           <form className="d-flex">
             <input

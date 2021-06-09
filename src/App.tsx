@@ -1,6 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import Index from "./pages/index";
 import UserProfile from "./pages/user";
+import Transfer from "./pages/transfer";
 import Header from "./components/Header";
 import useWeb3 from "./hooks/useWeb3";
 import { abi } from "./artifacts/contracts/Tweet.sol/UniqueTweet.json";
@@ -21,6 +22,9 @@ function App() {
           </Route>
           <Route path="/user/:id">
             <UserProfile />
+          </Route>
+          <Route path="/transfer/:id">
+            <Transfer />
           </Route>
         </Switch>
       </>
