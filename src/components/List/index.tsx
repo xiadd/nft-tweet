@@ -6,7 +6,6 @@ import styles from "./index.module.css";
 
 export default function List({ tweets }: { tweets: any[] }) {
   const { contract, account } = useContext<IContext>(Context);
-  console.log(contract?.methods.ownerOf(1).call());
   return (
     <div className={cx(styles.wrapper, "mt-2")}>
       {tweets.map((item, index) => (

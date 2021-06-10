@@ -14,7 +14,7 @@ struct Tweet {
 contract UniqueTweet is ERC721 {
     Tweet[] public tweets;
 
-    event userTweets(address indexed user);
+    event userTweets(address indexed user, string text, string date);
 
     constructor() ERC721("UniqueTweet", "UNIQUETWEET") {}
 
@@ -37,5 +37,6 @@ contract UniqueTweet is ERC721 {
         tweets.push(Tweet(msg.sender, text, date));
         uint256 _id = tweets.length;
         _mint(msg.sender, _id);
+        emit userTweets(msg.sender, text, date);
     }
 }
