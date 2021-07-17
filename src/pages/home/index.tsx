@@ -15,7 +15,7 @@ export default function Home() {
         }}
       >
         <main className="px-3">
-          <h1>NFT Tweets</h1>
+          <h1>NFT Tweets develop</h1>
           <p className="lead">
             A non-fungible token (NFT) is a unit of data stored on a digital
             ledger, called a blockchain, that certifies a digital asset to be
